@@ -9,7 +9,7 @@ We split the implementation into two folders for (i) synthetic and (ii) real-log
 
 For each folder, you can implement our approach by running 'run_experiments.py' file. 
 
-You can set your own parameters on the approach in 'log_utils.py' and 'shared_variables.py files located in the folder '~\src\commons'
+You can also set your own parameters in 'log_utils.py' and 'shared_variables.py files located in the folder '~\src\commons'
 
 The output is saved in the folder '~\data\output'.
 
