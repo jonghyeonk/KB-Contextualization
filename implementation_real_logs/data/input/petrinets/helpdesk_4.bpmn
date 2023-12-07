@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+ xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+ xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+ xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ targetNamespace="http://www.omg.org/bpmn20"
+ xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"><process id="proc_15628159"><startEvent id="node10" name=""><outgoing>edge5</outgoing>
+</startEvent>
+<endEvent id="node0" name=""><incoming>edge1</incoming>
+</endEvent>
+<task id="node3" name="Assign seriousness"><incoming>edge6</incoming>
+<outgoing>edge12</outgoing>
+</task>
+<task id="node4" name="Take in charge ticket"><incoming>edge10</incoming>
+<outgoing>edge7</outgoing>
+</task>
+<task id="node5" name="Closed"><incoming>edge3</incoming>
+<outgoing>edge1</outgoing>
+</task>
+<task id="node6" name="Insert ticket"><incoming>edge5</incoming>
+<outgoing>edge6</outgoing>
+</task>
+<task id="node7" name="Wait"><incoming>edge8</incoming>
+<outgoing>edge11</outgoing>
+</task>
+<task id="node8" name="Resolve ticket"><incoming>edge4</incoming>
+<outgoing>edge3</outgoing>
+</task>
+<task id="node9" name="Resolve SW anomaly"><incoming>edge2</incoming>
+<outgoing>edge0</outgoing>
+</task>
+<task id="node11" name="Require upgrade"><incoming>edge0</incoming>
+<outgoing>edge4</outgoing>
+</task>
+<task id="node12" name="Create SW anomaly"><incoming>edge9</incoming>
+<outgoing>edge2</outgoing>
+</task>
+<exclusiveGateway id="node1" name=""><incoming>edge7</incoming>
+<outgoing>edge8</outgoing>
+<outgoing>edge9</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node2" name=""><incoming>edge11</incoming>
+<incoming>edge12</incoming>
+<outgoing>edge10</outgoing>
+</exclusiveGateway>
+<sequenceFlow id="edge0" name="" sourceRef="node9" targetRef="node11"/>
+<sequenceFlow id="edge1" name="" sourceRef="node5" targetRef="node0"/>
+<sequenceFlow id="edge2" name="" sourceRef="node12" targetRef="node9"/>
+<sequenceFlow id="edge3" name="" sourceRef="node8" targetRef="node5"/>
+<sequenceFlow id="edge4" name="" sourceRef="node11" targetRef="node8"/>
+<sequenceFlow id="edge5" name="" sourceRef="node10" targetRef="node6"/>
+<sequenceFlow id="edge6" name="" sourceRef="node6" targetRef="node3"/>
+<sequenceFlow id="edge7" name="" sourceRef="node4" targetRef="node1"/>
+<sequenceFlow id="edge8" name="" sourceRef="node1" targetRef="node7"/>
+<sequenceFlow id="edge9" name="" sourceRef="node1" targetRef="node12"/>
+<sequenceFlow id="edge10" name="" sourceRef="node2" targetRef="node4"/>
+<sequenceFlow id="edge11" name="" sourceRef="node7" targetRef="node2"/>
+<sequenceFlow id="edge12" name="" sourceRef="node3" targetRef="node2"/>
+</process>
+<bpmndi:BPMNDiagram id="id_-439384182"><bpmndi:BPMNPlane bpmnElement="proc_15628159"><bpmndi:BPMNShape bpmnElement="node5"><dc:Bounds x="1276.0" y="121.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node8"><dc:Bounds x="1126.0" y="119.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node6"><dc:Bounds x="76.0" y="140.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node0"><dc:Bounds x="1426.0" y="129.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node1"><dc:Bounds x="601.0" y="140.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node4"><dc:Bounds x="451.0" y="127.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node3"><dc:Bounds x="226.0" y="143.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node9"><dc:Bounds x="826.0" y="109.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node2"><dc:Bounds x="376.0" y="156.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node12"><dc:Bounds x="676.0" y="101.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node10"><dc:Bounds x="1.0" y="148.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node11"><dc:Bounds x="976.0" y="115.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node7"><dc:Bounds x="676.0" y="171.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNEdge bpmnElement="edge3"><di:waypoint x="1176.0" y="139.5"/>
+<di:waypoint x="1326.0" y="141.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge6"><di:waypoint x="126.0" y="160.5"/>
+<di:waypoint x="276.0" y="163.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge11"><di:waypoint x="726.0" y="191.5"/>
+<di:waypoint x="613.5" y="197.5"/>
+<di:waypoint x="501.0" y="197.5"/>
+<di:waypoint x="388.5" y="168.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge7"><di:waypoint x="501.0" y="147.5"/>
+<di:waypoint x="613.5" y="152.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge2"><di:waypoint x="726.0" y="121.5"/>
+<di:waypoint x="876.0" y="129.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge5"><di:waypoint x="13.5" y="160.5"/>
+<di:waypoint x="126.0" y="160.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge10"><di:waypoint x="388.5" y="168.5"/>
+<di:waypoint x="501.0" y="147.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge9"><di:waypoint x="613.5" y="152.5"/>
+<di:waypoint x="726.0" y="121.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge8"><di:waypoint x="613.5" y="152.5"/>
+<di:waypoint x="726.0" y="191.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge4"><di:waypoint x="1026.0" y="135.5"/>
+<di:waypoint x="1176.0" y="139.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge0"><di:waypoint x="876.0" y="129.5"/>
+<di:waypoint x="1026.0" y="135.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge12"><di:waypoint x="276.0" y="163.5"/>
+<di:waypoint x="388.5" y="168.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge1"><di:waypoint x="1326.0" y="141.5"/>
+<di:waypoint x="1438.5" y="141.5"/>
+</bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane>
+</bpmndi:BPMNDiagram>
+</definitions>

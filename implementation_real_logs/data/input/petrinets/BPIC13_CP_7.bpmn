@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+ xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+ xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+ xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ targetNamespace="http://www.omg.org/bpmn20"
+ xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"><process id="proc_1196725283"><startEvent id="node1" name=""><outgoing>edge10</outgoing>
+</startEvent>
+<endEvent id="node5" name=""><incoming>edge0</incoming>
+</endEvent>
+<task id="node0" name="Accepted-Wait"><incoming>edge4</incoming>
+<outgoing>edge7</outgoing>
+</task>
+<task id="node2" name="Accepted-Assigned"><incoming>edge5</incoming>
+<outgoing>edge9</outgoing>
+</task>
+<task id="node3" name="Completed-Closed"><incoming>edge3</incoming>
+<outgoing>edge0</outgoing>
+</task>
+<task id="node7" name="Accepted-In Progress"><incoming>edge6</incoming>
+<outgoing>edge1</outgoing>
+</task>
+<task id="node8" name="Queued-Awaiting Assignment"><incoming>edge2</incoming>
+<outgoing>edge8</outgoing>
+</task>
+<exclusiveGateway id="node4" name=""><incoming>edge10</incoming>
+<incoming>edge7</incoming>
+<incoming>edge8</incoming>
+<incoming>edge9</incoming>
+<outgoing>edge6</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node6" name=""><incoming>edge1</incoming>
+<outgoing>edge2</outgoing>
+<outgoing>edge3</outgoing>
+<outgoing>edge4</outgoing>
+<outgoing>edge5</outgoing>
+</exclusiveGateway>
+<sequenceFlow id="edge0" name="" sourceRef="node3" targetRef="node5"/>
+<sequenceFlow id="edge1" name="" sourceRef="node7" targetRef="node6"/>
+<sequenceFlow id="edge2" name="" sourceRef="node6" targetRef="node8"/>
+<sequenceFlow id="edge3" name="" sourceRef="node6" targetRef="node3"/>
+<sequenceFlow id="edge4" name="" sourceRef="node6" targetRef="node0"/>
+<sequenceFlow id="edge5" name="" sourceRef="node6" targetRef="node2"/>
+<sequenceFlow id="edge6" name="" sourceRef="node4" targetRef="node7"/>
+<sequenceFlow id="edge7" name="" sourceRef="node0" targetRef="node4"/>
+<sequenceFlow id="edge8" name="" sourceRef="node8" targetRef="node4"/>
+<sequenceFlow id="edge9" name="" sourceRef="node2" targetRef="node4"/>
+<sequenceFlow id="edge10" name="" sourceRef="node1" targetRef="node4"/>
+</process>
+<bpmndi:BPMNDiagram id="id_-1402943692"><bpmndi:BPMNPlane bpmnElement="proc_1196725283"><bpmndi:BPMNShape bpmnElement="node8"><dc:Bounds x="376.0" y="311.0" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node5"><dc:Bounds x="526.0" y="178.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node6"><dc:Bounds x="301.0" y="212.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node3"><dc:Bounds x="376.0" y="171.0" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node1"><dc:Bounds x="1.0" y="234.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node2"><dc:Bounds x="376.0" y="101.0" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node0"><dc:Bounds x="376.0" y="241.0" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node4"><dc:Bounds x="76.0" y="234.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node7"><dc:Bounds x="151.0" y="203.0" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNEdge bpmnElement="edge4"><di:waypoint x="313.5" y="225.0"/>
+<di:waypoint x="426.0" y="261.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge10"><di:waypoint x="13.5" y="247.0"/>
+<di:waypoint x="88.5" y="247.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge9"><di:waypoint x="426.0" y="121.0"/>
+<di:waypoint x="313.5" y="173.0"/>
+<di:waypoint x="201.0" y="173.0"/>
+<di:waypoint x="88.5" y="247.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge5"><di:waypoint x="313.5" y="225.0"/>
+<di:waypoint x="426.0" y="121.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge8"><di:waypoint x="426.0" y="331.0"/>
+<di:waypoint x="313.5" y="303.0"/>
+<di:waypoint x="201.0" y="303.0"/>
+<di:waypoint x="88.5" y="247.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge0"><di:waypoint x="426.0" y="191.0"/>
+<di:waypoint x="538.5" y="191.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge6"><di:waypoint x="88.5" y="247.0"/>
+<di:waypoint x="201.0" y="223.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge2"><di:waypoint x="313.5" y="225.0"/>
+<di:waypoint x="426.0" y="331.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge1"><di:waypoint x="201.0" y="223.0"/>
+<di:waypoint x="313.5" y="225.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge7"><di:waypoint x="426.0" y="261.0"/>
+<di:waypoint x="313.5" y="273.0"/>
+<di:waypoint x="201.0" y="273.0"/>
+<di:waypoint x="88.5" y="247.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge3"><di:waypoint x="313.5" y="225.0"/>
+<di:waypoint x="426.0" y="191.0"/>
+</bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane>
+</bpmndi:BPMNDiagram>
+</definitions>
