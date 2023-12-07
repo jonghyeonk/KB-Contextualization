@@ -1,15 +1,15 @@
 # Descriptions
 
-### Approximating Multi-Perspective Trace Alignment Using Trace Encodings (Accepted in BPM 2023)
+### Knowledge-Driven Modulation of Neural Networks with Attention Mechanism for Next Activity Prediction (Preparing to submit)
 
-This repository contains the scripts developed for the proposed approximate approach of multi-perspective alignment.
+This repository contains the scripts of our proposed approach of predictive process monitoring.
 
-We evaluated the approach by using Sepsis and Road Fines event logs, and the results in Table 3~6 can be obtained by implementing below two scripts.
+We split the implementation into two folders for (i) synthetic and (ii) real-logs.
 
-1. 'prepare_bs_encoding.ipynb' 
+For each folder, you can implement our approach by running 'run_experiments.py' file. 
 
-    This script shows the processes (i) to generate non-complying traces by modifying the original traces, (ii) to save ground truth of original traces before modification, and (iii) to encode the prepared experimental datasets.
+You can set your own parameters on the approach in 'log_utils.py' and 'shared_variables.py files located in the folder '~\src\commons'
 
-2. Folder 'non_schatistic' includes datasets in non-stochastic setting and experimental codes
+The output is saved in the folder '~\data\output'.
 
-    This script shows (i) the approximate approach of multi-perspective alignment and (ii) the results by implementing it (the summary of the results is seen in table 3~6 in our paper).
+We also provide a summarized result of our experiments in 'performance.csv' file, which is presented in our paper. 
