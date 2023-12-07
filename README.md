@@ -2,6 +2,7 @@
 
 ### Knowledge-Driven Modulation of Neural Networks with Attention Mechanism for Next Activity Prediction (Preparing to submit)
 
+
 This repository contains the scripts of our proposed approach of predictive process monitoring.
 
 We split the implementation into two folders for (i) synthetic and (ii) real-logs.
