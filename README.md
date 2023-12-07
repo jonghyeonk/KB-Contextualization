@@ -16,4 +16,4 @@ The used event logs and BPMN models in the paper are located in the folder '~\da
 
 Then, after running the script, trained models and results of predictive process monitoring will be saved in the folder '~\data\output'.
 
-We also uploaded our trained model used in the paper in the folder '~\data\output_old'.
+We also uploaded our trained models used in the paper in the folder '~\data\output_old'.
