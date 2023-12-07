@@ -13,6 +13,6 @@ We also provide a summarized result of our experiments in 'performance.csv' file
 
 ## Input/Output files
 
-The used event logs and BPMN models are in the folder '~\data\input'.
+The used event logs and BPMN models in the paper are located in the folder '~\data\input'.
 
-After running the script, trained models and results of predictive process monitoring are saved in the folder '~\data\output'.
+Then, after running the script, trained models and results of predictive process monitoring will be saved in the folder '~\data\output'.
