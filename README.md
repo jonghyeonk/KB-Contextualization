@@ -16,4 +16,15 @@ The used event logs and BPMN models in the paper are located in the folder '~\da
 
 Then, after running the script, trained models and results of predictive process monitoring will be saved in the folder '~\data\output'.
 
-We also uploaded our trained models used in the paper in the folder '~\data\output_old'.
+We also uploaded our trained models used in the paper in the folder '~\data\output_old'. The result files after evaluation which used in our paper are downloadable in this link: https://drive.google.com/file/d/12_qesWq_mu6i0Tb4ckZyzCHpJOwdMcP2/view?usp=sharing.
+
+
+## How to train/evaluate
+
+The main implementation script is the 'run_experiments.py' file. 
+
+In line 62-64, you can configure (1) only training by setting 'default = True' in line 62, or (2) only evaluation by setting 'default = True' in line 63, or (3) both by setting 'default = True' in line 64. 
+
+Also, you can set more importance on BK knowledge by increasing values in weight parameter in line 82, e.g., 'weight = [0.9]'. 
+
+About the other parameters, we encourge to fix it, i.e., don't touch it. Some of them are not available, and we are now constructing it for an extended work.
