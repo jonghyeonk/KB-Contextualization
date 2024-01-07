@@ -27,7 +27,7 @@ You can run the script in command line by
 
 (i) firstly changing to the working directory, e.g., using "cd C:\Users\ADMIN\~\KB-Modulation\implementation_real_logs", and then 
 
-(ii) implementing "python run_experiments.py --log 'sepsis_cases_1.csv' --train". Here, the option '--train' is only for training a model and, otherwise, you can select one among ['--train', '--evaluation' (for evaluation), '--full_run' (for both)]. 
+(ii) implementing the script like "python run_experiments.py --log 'sepsis_cases_1.csv' --train". Here, the option '--train' is only for training a model and, otherwise, you can select one among ['--train', '--evaluation' (for evaluation), '--full_run' (for both)]. 
 
 In addition, an option 'weight' can allow you to configure the weight (importance) of BK in evaluation stage, e.g., "python run_experiments.py --log 'sepsis_cases_1.csv' --evaluation --weight '0.8'", otherwise, the default weight '0' will be applied.
 
