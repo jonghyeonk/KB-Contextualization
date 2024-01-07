@@ -33,3 +33,9 @@ In addition, an option 'weight' can allow you to configure the weight (importanc
 
 If you want to run the script using tools like Pycharm or VScode, in line 62-64 in 'run_experiments.py', you can configure (1) only training by setting 'default = True' in line 62, or (2) only evaluation by setting 'default = True' in line 63, or (3) both by setting 'default = True' in line 64.
 
+
+## Visualization with graph
+
+We also showed the trend graph by increasing weight value of BK. The all graphs can be seen in TBD.
+
+If you want to draw the graph by yourself, 
