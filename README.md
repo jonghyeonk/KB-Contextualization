@@ -23,10 +23,13 @@ We also uploaded our trained models used in the paper in the folder '~\data\outp
 
 The main implementation script is the 'run_experiments.py' file. 
 
-You can run it in command line by (i) firstly go to the directory using "cd C:\Users\ADMIN\...\KB-Modulation\implementation_real_logs" and then (ii) implementing "python run_experiments.py --log "sepsis_cases_1.csv" --train". Here, the option '--train' is to run only for training a model and, otherwise, you can select one among ['--train', '--evaluation' (for evaluation), '--full_run' (for both)]. 
+You can run the script in command line by 
 
-If you want to run the script using tools like Pycharm and VScode, in line 62-64 in 'run_experiments.py', you can configure (1) only training by setting 'default = True' in line 62, or (2) only evaluation by setting 'default = True' in line 63, or (3) both by setting 'default = True' in line 64. 
+(i) firstly changing to the directory, e.g., using "cd C:\Users\ADMIN\~\KB-Modulation\implementation_real_logs", and then 
 
-Also, you can set more importance on BK knowledge by increasing values in weight parameter in line 82, e.g., 'weight = [0.9]'. 
+(ii) implementing "python run_experiments.py --log 'sepsis_cases_1.csv' --train". Here, the option '--train' is only for training a model and, otherwise, you can select one among ['--train', '--evaluation' (for evaluation), '--full_run' (for both)]. 
 
-About the other parameters, we encourge to fix it, i.e., don't touch it. Some of them are not available, and we are now constructing it for an extended work.
+In addition, an option 'weight' can allow you to configure the weight (importance) of BK in evaluation stage, e.g., "python run_experiments.py --log 'sepsis_cases_1.csv' --evaluation --weight '0.8'", otherwise, the default weight '0' will be applied.
+
+If you want to run the script using tools like Pycharm or VScode, in line 62-64 in 'run_experiments.py', you can configure (1) only training by setting 'default = True' in line 62, or (2) only evaluation by setting 'default = True' in line 63, or (3) both by setting 'default = True' in line 64.
+
