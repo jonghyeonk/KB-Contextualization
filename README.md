@@ -36,7 +36,7 @@ If you want to run the script using tools like Pycharm or VScode, in line 62-64 
 
 ## Visualization with graph
 
-We also showed the trend graph by increasing weight value of BK. The all graphs can be seen in the folder '\plots_improvement'.
+We also showed trend graphs by increasing weight value of BK. The all graphs can be seen in the folder '\plots_improvement'.
 
 If you want to re-generate the graphs by yourself, you can simply do it by:
 
