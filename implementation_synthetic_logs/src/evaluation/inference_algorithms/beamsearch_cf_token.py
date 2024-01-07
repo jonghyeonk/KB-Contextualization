@@ -18,11 +18,8 @@ from src.commons import shared_variables as shared
 from src.commons.log_utils import LogData
 from src.evaluation.prepare_data import get_act_prediction, get_beam_size, encode, get_token_fitness, get_tr_fitness, get_token_fitness2
 from src.training.train_common import CustomTransformer
-import dask.dataframe as dd
-from dask.multiprocessing import get
 import absl.logging
 absl.logging.set_verbosity(absl.logging.ERROR)
-from dask.distributed import Client
 from tqdm import tqdm
 
 

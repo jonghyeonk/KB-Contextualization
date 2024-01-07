@@ -18,14 +18,28 @@ log_folder = input_folder / 'logs'
 pn_folder = input_folder / 'petrinets'
 
 epochs = 300
-folds = 3
+folds = 1
+train_ratio = 0.7
+variant_split = 0.9
 validation_split = 0.2
 
 log_list = [
-    'Synthetic.xes'
     #  'Synthetic log labelled.xes'
     # 'Production.csv'
-    #'sepsis_cases_1.csv'
+    # 'sepsis_cases_1.csv'
+    # 'sepsis_cases_1_sampled10.csv',
+    # 'sepsis_cases_1_sampled20.csv',
+    # 'sepsis_cases_1_sampled30.csv',
+    # 'sepsis_cases_1_sampled40.csv',
+    # 'sepsis_cases_1_sampled50.csv'
     # 'sepsis_cases_2.csv'
-#     'sepsis_cases_4.csv'
+#     'sepsis_cases_4.csv',
+    # 'Synthetic_UBE.csv',
+    # 'credit_card.csv',
+    # 'mccloud.csv',
+    # 'hospital_billing_2.csv',
+    # 'hospital_billing_3.csv'
+    # 'helpdesk.csv'
+    # 'BPIC12.csv'
+    'Synthetic.xes'
 ]

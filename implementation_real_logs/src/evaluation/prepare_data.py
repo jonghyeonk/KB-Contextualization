@@ -8,6 +8,7 @@ from __future__ import division
 import copy
 import re
 from pathlib import Path
+from typing import Dict
 
 import numpy as np
 import pm4py
@@ -31,7 +32,7 @@ def prepare_testing_data(log_data: LogData,  training_traces: pd.DataFrame, reso
         
     check_new_act = log_data.log[act_name_key].unique().tolist()
     
-    # if "\xad" in check_new_act:
+    # if "\xad" in check_new_act:   
     #     check_new_act.remove("\xad")
         
     # if "\xad" in act_chars:
@@ -102,7 +103,7 @@ def select_petrinet_compliant_traces(log_data: LogData,  method_fitness: str, tr
     return compliant_traces
 
 
-def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_data: LogData) -> dict[str: float]:
+def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_data: LogData) -> Dict[str, float]:
     # Decode traces for feeding them to the Petri net
     dec_log = log.replace(to_replace={
         log_data.act_name_key: log_data.act_enc_mapping,
@@ -202,8 +203,8 @@ def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_da
 #     return x
 
 
-def encode(crop_trace: pd.DataFrame, log_data: LogData,  maxlen: int, char_indices: dict[str, int],
-                      char_indices_group: dict[str, int], resource: bool) -> np.ndarray:
+def encode(crop_trace: pd.DataFrame, log_data: LogData,  maxlen: int, char_indices: Dict[str, int],
+                      char_indices_group: Dict[str, int], resource: bool) -> np.ndarray:
     """
     Onehot encoding of an ongoing trace (control-flow + resource)
     """

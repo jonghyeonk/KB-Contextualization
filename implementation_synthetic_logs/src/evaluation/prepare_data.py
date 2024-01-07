@@ -8,6 +8,7 @@ from __future__ import division
 import copy
 import re
 from pathlib import Path
+from typing import Dict
 
 import numpy as np
 import pm4py
@@ -19,7 +20,7 @@ from pm4py.objects.conversion.process_tree import converter as process_tree_conv
 from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
 
 
-def prepare_testing_data(log_data: LogData, training_traces: pd.DataFrame):
+def prepare_testing_data(log_data: LogData,  training_traces: pd.DataFrame, resource: bool):
     """
     Get all possible symbols for activities and resources and annotate them with integers.
     """
@@ -28,9 +29,18 @@ def prepare_testing_data(log_data: LogData, training_traces: pd.DataFrame):
     act_chars = list(training_traces[act_name_key].unique())
     act_chars.sort()
     
-    
+        
     check_new_act = log_data.log[act_name_key].unique().tolist()
-
+    
+    # if "\xad" in check_new_act:
+    #     check_new_act.remove("\xad")
+        
+    # if "\xad" in act_chars:
+    #     act_chars.remove("\xad") 
+    
+      
+    # if len(check_new_act) > len(act_chars):
+    #     print("New activity name unfound in train_set exists in test_set")
     act_chars2 = act_chars + [na for na in check_new_act if na not in act_chars]
 
     target_act_chars = copy.copy(act_chars)
@@ -48,16 +58,44 @@ def prepare_testing_data(log_data: LogData, training_traces: pd.DataFrame):
     target_act_to_int2 = dict((c, i) for i, c in enumerate(target_act_chars2))
     target_int_to_act2 = dict((i, c) for i, c in enumerate(target_act_chars2))
 
+    if resource:
+        res_name_key = log_data.res_name_key
+        res_chars = list(training_traces[res_name_key].unique())
+        res_chars.sort()
+        
+        check_new_res = log_data.log[res_name_key].unique()
+        if len(check_new_res) > len(res_chars):
+            print("New resource name unfound in train_set exists in test set")
+            res_chars = res_chars + [nr for nr in check_new_res if nr not in res_chars]
 
-    return act_to_int, target_act_to_int, target_int_to_act, target_act_to_int2, target_int_to_act2
+        target_res_chars = copy.copy(res_chars)
+        target_res_chars.append('!')
+        target_res_chars.sort()
+
+        res_to_int = dict((c, i) for i, c in enumerate(res_chars))
+        target_res_to_int = dict((c, i) for i, c in enumerate(target_res_chars))
+        target_int_to_res = dict((i, c) for i, c in enumerate(target_res_chars))
+    else:
+        res_to_int = None
+        target_res_to_int = None
+        target_int_to_res = None
+
+    return act_to_int, target_act_to_int, target_int_to_act, target_act_to_int2, target_int_to_act2, res_to_int, target_res_to_int, target_int_to_res
 
 
-def select_petrinet_compliant_traces(log_data: LogData, traces: pd.DataFrame, path_to_pn_model_file: Path):
+def select_petrinet_compliant_traces(log_data: LogData,  method_fitness: str, traces: pd.DataFrame, path_to_pn_model_file: Path):
     """
     Select traces compliant to a Petri Net at least in a certain percentage specified as compliance_th
     """
+        
+    
     compliant_trace_ids = []
-    for trace_id, fitness in get_token_fitness(path_to_pn_model_file, traces, log_data).items():
+    if (method_fitness == "fitness_alignments") or  (method_fitness == "conformance_diagnostics_alignments_prefix"):
+        method_fitness = "conformance_diagnostics_alignments"
+    elif method_fitness == "fitness_token_based_replay":
+        method_fitness = "conformance_diagnostics_token_based_replay"
+
+    for trace_id, fitness in get_pn_fitness(path_to_pn_model_file, method_fitness, traces, log_data).items():
         if fitness >= log_data.compliance_th:
             compliant_trace_ids.append(trace_id)
 
@@ -65,231 +103,137 @@ def select_petrinet_compliant_traces(log_data: LogData, traces: pd.DataFrame, pa
     return compliant_traces
 
 
-def get_token_fitness(pn_file: Path, log: pd.DataFrame, log_data: LogData) -> dict[str: float]:
+def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_data: LogData) -> Dict[str, float]:
     # Decode traces for feeding them to the Petri net
     dec_log = log.replace(to_replace={
         log_data.act_name_key: log_data.act_enc_mapping,
     })
 
+    # dec_log = log
     # dec_log['time:timestamp'] =  pd.to_datetime(log_data.log['Complete Timestamp']) # for product data
-    dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') #jh
+    dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') 
 
-    bpmn = pm4py.read_bpmn('Synthetic.bpmn')
-    # net, initial_marking, final_marking = pm4py.read_pnml(str(pn_file))
-
-    net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
+    if (method_fitness != "conformance_diagnostics_alignments_prefix"):
+        if 'bpmn' in str(bk_file):
+            bpmn = pm4py.read_bpmn(str(bk_file))
+            net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
+        else:
+            net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
+    else:
+        net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 30)) + ".pnml" )
+        
+        
+    # if ('pnml' in str(bk_file)) and (method_fitness != "conformance_diagnostics_alignments_prefix"):
+    #     print("no")
+    #     net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
+    # elif ('pnml' in str(bk_file)) and (method_fitness == "conformance_diagnostics_alignments_prefix"):
+    #     print("good")
+    #     net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 23)) + "." + str(bk_file).split(".")[1])
+    # elif ('bpmn' in str(bk_file)) and (method_fitness != "conformance_diagnostics_alignments_prefix"):
+    #     bpmn = pm4py.read_bpmn(str(bk_file))
+    #     net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
+    # elif ('bpmn' in str(bk_file)) and (method_fitness == "conformance_diagnostics_alignments_prefix"):
+    #     bpmn = pm4py.read_bpmn(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 23)) + "." + str(bk_file).split(".")[1])
+    #     net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
+        
     
-    # pm4py.fitness_token_based_replay
-    # pm4py.conformance_diagnostics_token_based_replay
-    alignments = pm4py.conformance_diagnostics_token_based_replay(dec_log,  net, initial_marking, final_marking,
-                                                          activity_key=log_data.act_name_key,
-                                                        #   timestamp_key= 'time:timestamp',
-                                                          case_id_key=log_data.case_name_key)
+    if method_fitness == "conformance_diagnostics_alignments":
+        alignments = pm4py.conformance_diagnostics_alignments(dec_log,  net, initial_marking, final_marking,
+                                                            activity_key=log_data.act_name_key,
+                                                            case_id_key=log_data.case_name_key,
+                                                            timestamp_key= log_data.timestamp_key)
+        trace_fitnesses = [a['fitness'] for a in alignments]
 
+    elif method_fitness == "conformance_diagnostics_alignments_prefix":
+        alignments = pm4py.conformance_diagnostics_alignments(dec_log,  net, initial_marking, final_marking,
+                                                            activity_key=log_data.act_name_key,
+                                                            case_id_key=log_data.case_name_key,
+                                                            timestamp_key= log_data.timestamp_key)
+        trace_fitnesses = [a['fitness'] for a in alignments]
+        
+    elif method_fitness == "fitness_alignments":
+        alignments = pm4py.fitness_alignments(dec_log,  net, initial_marking, final_marking,
+                                                          activity_key=log_data.act_name_key,
+                                                          case_id_key=log_data.case_name_key,
+                                                          timestamp_key= log_data.timestamp_key)
+                                                          
+        trace_fitnesses = [alignments['log_fitness']]
+    
+    elif method_fitness == "conformance_diagnostics_token_based_replay":
+        alignments = pm4py.conformance_diagnostics_token_based_replay(dec_log,  net, initial_marking, final_marking,
+                                                          activity_key=log_data.act_name_key,
+                                                          case_id_key=log_data.case_name_key,
+                                                          timestamp_key= log_data.timestamp_key)
+        trace_fitnesses = [a['trace_fitness'] for a in alignments]
+        
+    elif method_fitness == "fitness_token_based_replay":
+        alignments = pm4py.fitness_token_based_replay(dec_log,  net, initial_marking, final_marking,
+                                                          activity_key=log_data.act_name_key,
+                                                          case_id_key=log_data.case_name_key,
+                                                          timestamp_key= log_data.timestamp_key)
+        trace_fitnesses = [alignments['log_fitness']]
+        
+        
     trace_ids = list(log[log_data.case_name_key].unique())
-    trace_fitnesses = [a['trace_fitness'] for a in alignments]
     trace_ids_with_fitness = dict(zip(trace_ids, trace_fitnesses))
     return trace_ids_with_fitness
 
 
-def get_token_fitness2(pn_file: Path, log: pd.DataFrame, log_data: LogData) -> dict[str: float]:
-    # Decode traces for feeding them to the Petri net
-    dec_log = log.replace(to_replace={
-        log_data.act_name_key: log_data.act_enc_mapping,
-    })
 
-    # dec_log['time:timestamp'] =  pd.to_datetime(log_data.log['Complete Timestamp']) # for product data
-    dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') #jh
-
-    
-    bpmn = pm4py.read_bpmn('Synthetic.bpmn')
-    # net, initial_marking, final_marking = pm4py.read_pnml(str(pn_file))
-
-    net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
-    
-    # pm4py.fitness_token_based_replay
-    # pm4py.conformance_diagnostics_token_based_replay
-    alignments = pm4py.fitness_token_based_replay(dec_log,  net, initial_marking, final_marking,
-                                                          activity_key=log_data.act_name_key,
-                                                        #   timestamp_key= 'time:timestamp',
-                                                          case_id_key=log_data.case_name_key)
-
-    trace_ids = list(log[log_data.case_name_key].unique())
-    trace_fitnesses = [alignments['log_fitness']]
-    trace_ids_with_fitness = dict(zip(trace_ids, trace_fitnesses))
-    return trace_ids_with_fitness
-
-def get_pn_fitness(pn_file: Path, log: pd.DataFrame, log_data: LogData) -> dict[str: float]:
-    # Decode traces for feeding them to the Petri net
-    dec_log = log.replace(to_replace={
-        log_data.act_name_key: log_data.act_enc_mapping
-    })
-
-    # dec_log['time:timestamp'] =  pd.to_datetime(log_data.log['Complete Timestamp']) # for product data
-    dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') #jh
-
-    bpmn = pm4py.read_bpmn('Synthetic.bpmn')
-    # net, initial_marking, final_marking = pm4py.read_pnml(str(pn_file))
-    alignments = pm4py.conformance_diagnostics_alignments(dec_log,  bpmn,
-                                                          activity_key=log_data.act_name_key,
-                                                        #   timestamp_key= 'time:timestamp',
-                                                          case_id_key=log_data.case_name_key)
-    
-    trace_ids = list(log[log_data.case_name_key].unique())
-    trace_fitnesses = [a['fitness'] for a in alignments]
-    
-    trace_ids_with_fitness = dict(zip(trace_ids, trace_fitnesses))
-    return trace_ids_with_fitness
-
-def get_pn_fitness2(pn_file: Path, log: pd.DataFrame, log_data: LogData) -> dict[str: float]:
-    # Decode traces for feeding them to the Petri net
-    dec_log = log.replace(to_replace={
-        log_data.act_name_key: log_data.act_enc_mapping,
-        log_data.res_name_key: log_data.res_enc_mapping
-    })
-
-    # dec_log['time:timestamp'] =  pd.to_datetime(log_data.log['Complete Timestamp']) # for product data
-    dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') #jh
-
-    
-    net, initial_marking, final_marking = pm4py.read_pnml(str(pn_file))
-
-    alignments = pm4py.fitness_alignments(dec_log,  net, initial_marking, final_marking,
-                                                          activity_key=log_data.act_name_key,
-                                                        #   timestamp_key= 'time:timestamp',
-                                                          case_id_key=log_data.case_name_key)
-
-    trace_ids = list(log[log_data.case_name_key].unique())
-    trace_fitnesses = [alignments['log_fitness']]
-    
-    trace_ids_with_fitness = dict(zip(trace_ids, trace_fitnesses))
-    return trace_ids_with_fitness
-
-
-def get_tr_fitness(pt_file: Path, log: pd.DataFrame, log_data: LogData, trace_name) -> float:
-    # Decode traces for feeding them to the Petri net
-    dec_log = log.replace(to_replace={
-        log_data.act_name_key: log_data.act_enc_mapping,
-        log_data.res_name_key: log_data.res_enc_mapping
-    })
-    dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') #jh
-
-    tree = pm4py.read_ptml(str(pt_file))
-
-    # tree = pm4py.convert_to_process_tree(net, initial_marking, final_marking)
-    net, initial_marking, final_marking = process_tree_converter.apply(tree)
-
-    dec_log[log_data.case_name_key] = trace_name 
-    dec_log = pm4py.format_dataframe(dec_log, 
-                                     case_id=log_data.case_name_key, 
-                                     activity_key=log_data.act_name_key, 
-                                     timestamp_key=log_data.timestamp_key)
-
-    # event_log = pm4py.convert_to_event_log(dec_log)
-    aligned_traces = alignments.apply_log(dec_log, net, initial_marking, final_marking)
-                                        #   activity_key=log_data.act_name_key,
-                                    #   timestamp_key= 'time:timestamp',
-                                        # case_id_key=log_data.case_name_key)
-
-    trace_ids_with_fitness = replay_fitness.evaluate(aligned_traces, variant=replay_fitness.Variants.ALIGNMENT_BASED)
-
-    
-    return list(trace_ids_with_fitness.values())[3]
 
 
 # === Helper functions ===
 
-def encode(sentence: str, maxlen: int, char_indices: dict[str, int]) -> np.ndarray:
-    """
-    Onehot encoding of an ongoing trace (only control-flow)
-    """
-    chars = list(char_indices.keys())
-    num_features = len(chars) + 1
-    x = np.zeros((1, maxlen, num_features), dtype=np.float32)
-    leftpad = maxlen - len(sentence)
-    for t, char in enumerate(sentence):
-        for c in chars:
-            if c == char:
-                x[0, t + leftpad, char_indices[c]] = 1
-        x[0, t + leftpad, len(chars)] = t + 1
-    return x
+# def encode(sentence: str, maxlen: int, char_indices: dict[str, int], resource: bool) -> np.ndarray:
+#     """
+#     Onehot encoding of an ongoing trace (only control-flow)
+#     """
+#     chars = list(char_indices.keys())
+#     num_features = len(chars) + 1 
+#     x = np.zeros((1, maxlen, num_features), dtype=np.float32)
+#     leftpad = maxlen - len(sentence) 
+#     for t, char in enumerate(sentence):
+#         for c in chars:
+#             if c == char:
+#                 x[0, t + leftpad, char_indices[c]] = 1
+#         x[0, t + leftpad, len(chars)] = t + 1
+#     return x
 
 
-
-
-def encode_with_group0(sentence: str, sentence_group: str,  maxlen: int, char_indices: dict[str, int],
-                      char_indices_group: dict[str, int]) -> np.ndarray:
+def encode(crop_trace: pd.DataFrame, log_data: LogData,  maxlen: int, char_indices: Dict[str, int],
+                      char_indices_group: Dict[str, int], resource: bool) -> np.ndarray:
     """
     Onehot encoding of an ongoing trace (control-flow + resource)
     """
     chars = list(char_indices.keys())
-    chars_group = list(char_indices_group.keys())
-    num_features = len(chars) + len(chars_group) + 1
-    x = np.zeros((1, maxlen, num_features), dtype=np.float32)
-    leftpad = maxlen - len(sentence)
-    for t, char in enumerate(sentence):
-        for c in chars:
-            if c == char:
-                x[0, t + leftpad, char_indices[c]] = 1
-        for g in chars_group:
-            if g == sentence_group[t]:
-                x[0, t + leftpad, len(char_indices) + char_indices_group[g]] = 1
+    
+    if resource:
+        sentence = ''.join(crop_trace[log_data.act_name_key].tolist())
+        sentence_group = ''.join(crop_trace[log_data.res_name_key].tolist())
+        chars_group = list(char_indices_group.keys())
+        num_features = len(chars) + len(chars_group) + 1
+        x = np.zeros((1, maxlen, num_features), dtype=np.float32)
+        leftpad = maxlen - len(sentence)
+        for t, char in enumerate(sentence):
+            for c in chars:
+                if c == char:
+                    x[0, t + leftpad, char_indices[c]] = 1
+            for g in chars_group:
+                if g == sentence_group[t]:
+                    x[0, t + leftpad, len(char_indices) + char_indices_group[g]] = 1
 
-        x[0, t + leftpad, len(chars) + len(chars_group)] = t + 1
-    return x
-
-
-def encode_with_group(sentence: str, sentence_group: str, sentence_time: list, maxlen: int, char_indices: dict[str, int],
-                      char_indices_group: dict[str, int]) -> np.ndarray:
-    """
-    Onehot encoding of an ongoing trace (control-flow + resource)
-    """
-    chars = list(char_indices.keys())
-    chars_group = list(char_indices_group.keys())
-    num_features = len(chars) + len(chars_group) + 2
-    x = np.zeros((1, maxlen, num_features), dtype=np.float32)
-    leftpad = maxlen - len(sentence)
-    for t, char in enumerate(sentence):
-        for c in chars:
-            if c == char:
-                x[0, t + leftpad, char_indices[c]] = 1
-        for g in chars_group:
-            if g == sentence_group[t]:
-                x[0, t + leftpad, len(char_indices) + char_indices_group[g]] = 1
-        for ti in sentence_time:
-                x[0, t + leftpad, len(chars) + len(chars_group) ] = ti    
-        
-        x[0, t + leftpad, len(chars) + len(chars_group)+1] = t + 1
-    return x
-
-
-def encode_with_group2(sentence: str, sentence_group: str, sentence_time: list, sentence_time2: list, 
-                       sentence_time3: list, sentence_time4: list, maxlen: int, char_indices: dict[str, int],
-                      char_indices_group: dict[str, int]) -> np.ndarray:  #jh
-    """
-    Onehot encoding of an ongoing trace (control-flow + resource)
-    """
-    chars = list(char_indices.keys())
-    chars_group = list(char_indices_group.keys())
-    num_features = len(chars) + len(chars_group) + 5
-    x = np.zeros((1, maxlen, num_features), dtype=np.float32)
-    leftpad = maxlen - len(sentence)
-    for t, char in enumerate(sentence):
-        for c in chars:
-            if c == char:
-                x[0, t + leftpad, char_indices[c]] = 1
-        for g in chars_group:
-            if g == sentence_group[t]:
-                x[0, t + leftpad, len(char_indices) + char_indices_group[g]] = 1
-        for ti in sentence_time:
-                x[0, t + leftpad, len(chars) + len(chars_group) ] = ti    
-        for ti in sentence_time2:
-                x[0, t + leftpad, len(chars) + len(chars_group)+1 ] = ti     
-        for ti in sentence_time3:
-                x[0, t + leftpad, len(chars) + len(chars_group)+2 ] = ti  
-        for ti in sentence_time4:
-                x[0, t + leftpad, len(chars) + len(chars_group)+3 ] = ti                       
-        x[0, t + leftpad, len(chars) + len(chars_group)+4] = t + 1
+            x[0, t + leftpad, len(chars) + len(chars_group)] = t + 1
+    else:
+        sentence = ''.join(crop_trace[log_data.act_name_key].tolist())
+        num_features = len(chars) + 1 
+        x = np.zeros((1, maxlen, num_features), dtype=np.float32)
+        leftpad = maxlen - len(sentence) 
+        for t, char in enumerate(sentence):
+            for c in chars:
+                if c == char:
+                    x[0, t + leftpad, char_indices[c]] = 1
+            x[0, t + leftpad, len(chars)] = t + 1  
+            
     return x
 
 
@@ -333,64 +277,65 @@ def get_act_prediction(prefix, prediction, target_ind_to_act, target_act_to_ind,
 
 
 
-def get_beam_size(self, NodePrediction, current_prediction_premis, prefix, prefix_trace, prediction,y_char,fitness,act_ground_truth_org,
-                  target_ind_to_act, target_act_to_ind, log_data, beam_size):
+def get_beam_size(self, NodePrediction, current_prediction_premis, prefix, prefix_trace, prediction, res_prediction, y_char, fitness, act_ground_truth_org,
+                  char_indices, target_ind_to_act, target_act_to_ind, target_ind_to_res, target_res_to_ind, step, 
+                  log_data, resource, beam_size):
     
-    for j in range(beam_size):
-        temp_prediction = get_act_prediction(prefix, prediction, target_ind_to_act, target_act_to_ind, reduce_loop_prob=True, ith_best=j)
-        predicted_row = prefix_trace.tail(1).copy()
-        predicted_row.loc[:, log_data.act_name_key] = temp_prediction
-        temp_cropped_trace_next = pd.concat([prefix_trace, predicted_row], axis= 0)
-        probability_this = np.sort(prediction)[len(prediction) - 1 - j]
-        # fitness_sorted = np.array(fitness)[np.argsort(prediction)]
-        # fitness_this = fitness_sorted[len(fitness_sorted) - 1 - j]
-        # y_char_sorted = np.array(y_char)[np.argsort(prediction)]
-        # y_char_this = y_char_sorted[len(y_char_sorted) - 1 - j]
-        temp = NodePrediction(temp_cropped_trace_next,
-                                current_prediction_premis.probability_of + np.log(probability_this)) # current_prediction_premis.probability_of + np.log(probability_this) # probability_this
-        trace_org = [log_data.act_enc_mapping[i] if i != "!" else "" for i in temp_cropped_trace_next[log_data.act_name_key].tolist()]
-        
-        # if len( [i for i in act_ground_truth_org if i in ['Unexpected2', 'Repairing2', 'Unexpected1', 'Repairing1'] ] ) > 0:
+    record = []
+    if resource:
+        act_prefix = prefix.cropped_line
+        res_prefix = prefix.cropped_line_group
+        for j in range(beam_size):
+            temp_prediction = get_predictions(act_prefix, res_prefix, prediction, res_prediction,
+                                            target_ind_to_act, target_act_to_ind, target_ind_to_res, target_res_to_ind, reduce_loop_prob=True,ith_best=j)
             
-        #     print(
-        #         #"trace = ", ''.join(temp_cropped_trace_next[log_data.act_name_key].tolist()) , 
-        #         "trace_org = ", '>>'.join(  trace_org ) , 
-        #         ", previous = ", round( current_prediction_premis.probability_of, 3),
-        #         ", current = ", round( current_prediction_premis.probability_of + np.log(probability_this), 3),
-        #         ", rnn = ", round(y_char_this,3),
-        #         ", fitness = ", round(fitness_this,3)
-        #         )     
-        
-        self.put(temp)
-        
-    return self
+            predicted_row = prefix_trace.tail(1).copy()
+            predicted_row.loc[:, log_data.act_name_key] = temp_prediction
+            temp_cropped_trace_next = pd.concat([prefix_trace, predicted_row], axis= 0)
+            probability_this = np.sort(prediction)[len(prediction) - 1 - j]
 
+            temp = NodePrediction(temp_cropped_trace_next,
+                                    current_prediction_premis.probability_of + np.log(probability_this))
+            # print("trace = ", ''.join(temp_cropped_trace_next[log_data.act_name_key].tolist()) , ", prob = ",current_prediction_premis.probability_of + np.log(probability_this))
+            self.put(temp)  
+    else:
+        for j in range(beam_size):
+            temp_prediction = get_act_prediction(prefix, prediction, target_ind_to_act, target_act_to_ind, reduce_loop_prob=True, ith_best=j)
+            predicted_row = prefix_trace.tail(1).copy()
+            predicted_row.loc[:, log_data.act_name_key] = temp_prediction
+            temp_cropped_trace_next = pd.concat([prefix_trace, predicted_row], axis= 0)
+            probability_this = np.sort(prediction)[len(prediction) - 1 - j]
+            
+            temp = NodePrediction(temp_cropped_trace_next,
+                                    current_prediction_premis.probability_of + np.log(probability_this))            
 
-def get_beam_size2(self, NodePrediction, current_prediction_premis, prefix, prefix_trace, prediction,y_char, fitness,
-                   target_ind_to_act, target_act_to_ind, log_data, beam_size):
-    
-    for j in range(beam_size):
-        temp_prediction = get_act_prediction(prefix, prediction, target_ind_to_act, target_act_to_ind, reduce_loop_prob=True, ith_best=j)
-        predicted_row = prefix_trace.tail(1).copy()
-        predicted_row.loc[:, log_data.act_name_key] = temp_prediction
-        temp_cropped_trace_next = pd.concat([prefix_trace, predicted_row], axis= 0)
-        probability_this = np.sort(prediction)[len(prediction) - 1 - j]
-        fitness_sorted = np.array(fitness)[np.argsort(prediction)]
-        fitness_this = fitness_sorted[len(fitness_sorted) - 1 - j]
-        y_char_sorted = np.array(y_char)[np.argsort(prediction)]
-        y_char_this = y_char_sorted[len(y_char_sorted) - 1 - j]
-        temp = NodePrediction(temp_cropped_trace_next,
-                                current_prediction_premis.probability_of + np.log(probability_this))
-        # print("trace = ", ''.join(temp_cropped_trace_next[log_data.act_name_key].tolist()) , 
-        #       ", previous = ", round( current_prediction_premis.probability_of, 3),
-        #       ", current = ", round( current_prediction_premis.probability_of + np.log(probability_this), 3),
-        #       ", rnn = ", round(y_char_this,3),
-        #       ", fitness = ", round(fitness_this,3)
-        #       )
-        
-        self.put(temp)
-        
-    return self
+            trace_org = [log_data.act_enc_mapping[i] if i != "!" else "" for i in temp_cropped_trace_next[log_data.act_name_key].tolist()]
+            
+            if len(fitness) > 0 :
+                fitness_sorted = np.array(fitness)[np.argsort(prediction)]
+                fitness_this = fitness_sorted[len(fitness_sorted) - 1 - j]
+                y_char_sorted = np.array(y_char)[np.argsort(prediction)]
+                y_char_this = y_char_sorted[len(y_char_sorted) - 1 - j]
+                
+                #   act_ground_truth_org[step]
+                # if step < len(act_ground_truth_org):
+                #     rank = sum( prediction> prediction[target_act_to_ind[list(log_data.act_enc_mapping.keys())[list(log_data.act_enc_mapping.values()).index(act_ground_truth_org[step])]]]) +1
+                # else:
+                #     rank = 99999
+                record.append(str(
+                    #"trace = ", ''.join(temp_cropped_trace_next[log_data.act_name_key].tolist()) , 
+                    "trace_org = " + '>>'.join(  trace_org ) + 
+                    "// previous = " + str(round( current_prediction_premis.probability_of, 3)) +
+                    "// current = " + str(round( current_prediction_premis.probability_of + np.log(probability_this), 3)) +
+                    "// rnn = " + str(round(y_char_this,3)) +
+                    "// fitness = " + str(round(fitness_this,3))) +
+                    # "// rank = " + str(rank) +
+                    "&"
+                    )        
+
+            self.put(temp)    
+               
+    return self, record
 
 
 def reduce_loop_probability(act_seq, res_seq):

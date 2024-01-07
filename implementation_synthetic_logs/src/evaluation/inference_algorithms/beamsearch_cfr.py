@@ -16,7 +16,7 @@ from jellyfish import damerau_levenshtein_distance
 
 from src.commons import shared_variables as shared
 from src.commons.log_utils import LogData
-from src.evaluation.prepare_data import encode_with_group, get_predictions, get_pn_fitness, encode_with_group0
+from src.evaluation.prepare_data import encode_with_group, get_predictions, get_pn_fitness
 from src.training.train_common import CustomTransformer
 import dask.dataframe as dd
 from dask.multiprocessing import get

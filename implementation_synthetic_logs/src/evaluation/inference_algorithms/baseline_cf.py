@@ -32,31 +32,36 @@ def run_experiments(log_data: LogData, compliant_traces: pd.DataFrame, maxlen, p
 
     with open(output_file, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(["Prefix length", "Ground truth", "Predicted", "Damerau-Levenshtein", "Jaccard"
-                             ])
+        spamwriter.writerow(["Prefix length", "Ground truth", "Predicted", "Damerau-Levenshtein", "Jaccard",
+                             "Ground truth outcome", "Predicted outcome", "Outcome diff."])
 
     for prefix_size in range(log_data.evaluation_prefix_start, log_data.evaluation_prefix_end+1):
         print("Prefix size: " + str(prefix_size))
 
         for trace_name, trace in compliant_traces.groupby(log_data.case_name_key):
-            lines = extract_trace_sequences(log_data, [trace_name])
+            lines, _, outcomes = extract_trace_sequences(log_data, [trace_name])
             line = lines[0]
+            outcome = outcomes[0]
 
             if len(line) < prefix_size:
                 continue  # Make no prediction for this case, since this case has ended already
 
             cropped_line = ''.join(line[: prefix_size])
             ground_truth = ''.join(line[prefix_size: prefix_size+predict_size])
+            ground_truth_o = outcome
             predicted = ''
+            predicted_outcome = ''
 
             for i in range(predict_size - prefix_size):
                 enc = encode(cropped_line, maxlen, char_indices)
                 y = model.predict(enc, verbose=0)  # make predictions
                 # split predictions into separate activity and outcome predictions
-                y_char = y[0]
+                y_char = y[0][0]
+                y_o = y[1][0][0]
 
                 # undo one-hot encoding
                 prediction = get_act_prediction(cropped_line, y_char, target_indices_char, target_char_indices)
+                predicted_outcome = '1' if y_o >= 0.5 else '0'
 
                 if prediction == '!':
                     # end of case was just predicted, therefore, stop predicting further into the future
@@ -77,8 +82,11 @@ def run_experiments(log_data: LogData, compliant_traces: pd.DataFrame, maxlen, p
                 output.append(dls)
                 output.append(1 - distance.jaccard(predicted, ground_truth))
 
+                output.append(ground_truth_o)
+                output.append(predicted_outcome)
+                output.append('1' if ground_truth_o == predicted_outcome else '0')
 
             if output:
-                with open(output_file, 'a', encoding='utf-8', newline='') as csvfile:
+                with open(output_file, 'a', newline='') as csvfile:
                     spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                     spamwriter.writerow(output)

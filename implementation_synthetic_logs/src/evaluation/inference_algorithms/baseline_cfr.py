@@ -16,7 +16,7 @@ from tensorflow import keras
 
 from src.commons.log_utils import LogData
 from src.commons.utils import extract_trace_sequences
-from src.evaluation.prepare_data import encode_with_group, get_predictions
+from src.evaluation.prepare_data import get_predictions
 from src.training.train_common import CustomTransformer
 
 
