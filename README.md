@@ -23,7 +23,7 @@ We also uploaded our trained models used in the paper in the folder '~\data\outp
 
 The main implementation script is the 'run_experiments.py' file. 
 
-You can run the script in command line by (i) firstly go to the directory, e.g., using "cd C:\Users\ADMIN\~\KB-Modulation\implementation_real_logs", and then (ii) implementing "python run_experiments.py --log "sepsis_cases_1.csv" --train". Here, the option '--train' is to run only for training a model and, otherwise, you can select one among ['--train', '--evaluation' (for evaluation), '--full_run' (for both)]. 
+You can run the script in command line by (i) firstly go to the directory, e.g., using "cd C:\Users\ADMIN\~\KB-Modulation\implementation_real_logs", and then (ii) implementing "python run_experiments.py --log "sepsis_cases_1.csv" --train". Here, the option '--train' is only for training a model and, otherwise, you can select one among ['--train', '--evaluation' (for evaluation), '--full_run' (for both)]. 
 
 If you want to run the script using tools like Pycharm and VScode, in line 62-64 in 'run_experiments.py', you can configure (1) only training by setting 'default = True' in line 62, or (2) only evaluation by setting 'default = True' in line 63, or (3) both by setting 'default = True' in line 64. 
 
