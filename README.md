@@ -42,4 +42,4 @@ If you want to re-generate the graphs by yourself, you can simply do it by:
 
 (i) installing R (https://cran.rstudio.com/) or Rstudio (https://posit.co/download/rstudio-desktop/) and,
 
-(ii) then, in the tool, just implementing 'Graph_reallogs.R' and 'Graph_synthetic.R' located in the folder '\plots_improvement'. In the R script, you only need to configure your working directory in the first line as "setwd("C:/Users/ADMIN/Desktop/~/KB_Modulation_results")", where KB_Modulation_results folder should contain the result files in this previous link: https://drive.google.com/file/d/12_qesWq_mu6i0Tb4ckZyzCHpJOwdMcP2/view?usp=sharing.
+(ii) then, in the tool, just implementing 'Graph_reallogs.R' and 'Graph_synthetic.R' located in the folder '\plots_improvement'. In the R scripts, you only need to configure your working directory in the first line as "setwd("C:/Users/ADMIN/Desktop/~/KB_Modulation_results")", where KB_Modulation_results folder should contain the result files in this previous link: https://drive.google.com/file/d/12_qesWq_mu6i0Tb4ckZyzCHpJOwdMcP2/view?usp=sharing.
