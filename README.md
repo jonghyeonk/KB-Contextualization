@@ -33,4 +33,3 @@ In addition, an option 'weight' can allow you to configure the weight (importanc
 
 If you want to run the script using tools like Pycharm or VScode, in line 62-64 in 'run_experiments.py', you can configure (1) only training by setting 'default = True' in line 62, or (2) only evaluation by setting 'default = True' in line 63, or (3) both by setting 'default = True' in line 64.
 
-About the other parameters, we encourge to fix it, i.e., don't touch it. Some of them are not available, and we are now constructing it for an extended work.
