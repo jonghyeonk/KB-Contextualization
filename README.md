@@ -36,6 +36,10 @@ If you want to run the script using tools like Pycharm or VScode, in line 62-64 
 
 ## Visualization with graph
 
-We also showed the trend graph by increasing weight value of BK. The all graphs can be seen in TBD.
+We also showed the trend graph by increasing weight value of BK. The all graphs can be seen in the folder '\plots_improvement'.
 
-If you want to draw the graph by yourself, 
+If you want to re-generate the graphs by yourself, you can simply do it by:
+
+(i) installing R (https://cran.rstudio.com/) or Rstudio (https://posit.co/download/rstudio-desktop/) and,
+
+(ii) then, just implementing 'Graph_reallogs.R' and 'Graph_synthetic.R' in the tool. In the R script, you only need to configure your working directory in the first line as "setwd("C:/Users/ADMIN/Desktop/~/KB_Modulation_results")", where KB_Modulation_results folder should contain the result files in this previous link: https://drive.google.com/file/d/12_qesWq_mu6i0Tb4ckZyzCHpJOwdMcP2/view?usp=sharing.
