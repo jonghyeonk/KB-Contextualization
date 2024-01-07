@@ -8,15 +8,10 @@ from src.training import train_model
 
 
 class ExperimentRunner:
-    def __init__(self, model, port, python_port, train, evaluate):
-        self._model = model
-        self._port = port
-        self._python_port = python_port
+    def __init__(self, train, evaluate):
         self._train = train
         self._evaluate = evaluate
 
-        print(args.port, python_port)
-        print('Used network:', self._model)
         print('Perform training:', self._train)
         print('Perform evaluation:', self._evaluate)
 
@@ -45,41 +40,38 @@ class ExperimentRunner:
         print(f'Evaluation prefix range: [{log_data.evaluation_prefix_start}, {log_data.evaluation_prefix_end}]')
     
         if self._train:
-            train_model.train(log_data, self._model, resource, outcome)
+            train_model.train(log_data, "keras_trans", resource, outcome)
         
         if self._evaluate:
-            evaluation.evaluate_all(log_data, self._model, alg, method_fitness, weight, resource, timestamp, outcome)
+            evaluation.evaluate_all(log_data, "keras_trans", alg, method_fitness, weight, resource, timestamp, outcome)
 
 
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
     parser.add_argument('--log', default=None, help='input log')
-    parser.add_argument('--model', default="keras_trans", help='choose among ["LSTM", "custom_trans", "keras_trans"]')
-    parser.add_argument('--port', type=int, default=25333, help='communication port (python port = port + 1)')
 
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--train', default=False, action='store_true', help='train without evaluating')
+    group.add_argument('--train', default=True, action='store_true', help='train without evaluating')
     group.add_argument('--evaluate', default=False, action='store_true', help='evaluate without training')
     group.add_argument('--full_run', default=False, action='store_true', help='train and evaluate model')
+    group.add_argument('--weight', default=0, action='store_true', help='train and evaluate model')
 
     args = parser.parse_args()
 
     logs = [args.log.strip()] if args.log else shared.log_list
-    
+    w = [float(args.weight)]
+
     if args.full_run:
         args.train = True
         args.evaluate = True
 
-    ExperimentRunner(model=args.model,
-                     port=args.port,
-                     python_port=args.port+1,
-                     train=args.train,
+    ExperimentRunner(train=args.train,
                      evaluate=args.evaluate) \
         .run_experiments(log_list=logs,
                          alg = "beamsearch",
                          method_fitness = "fitness_token_based_replay",  
-                         weight = [0, 0.95] ,
+                         weight = w,
                          resource = False,
                          timestamp = False,
                          outcome = False)
