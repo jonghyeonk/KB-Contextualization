@@ -76,6 +76,3 @@ if __name__ == '__main__':
                          timestamp = False,
                          outcome = False)
         
-        ## Note
-        # alg = "baseline" or "beamsearch"
-        # method_fitness = "conformance_diagnostics_alignments", "conformance_diagnostics_token_based_replay", "fitness_alignments", "fitness_token_based_replay"

@@ -15,10 +15,6 @@ import pm4py
 import pandas as pd
 
 from src.commons.log_utils import LogData
-from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
-from pm4py.objects.conversion.process_tree import converter as process_tree_converter
-from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
-
 
 def prepare_testing_data(log_data: LogData,  training_traces: pd.DataFrame, resource: bool):
     """
@@ -32,15 +28,6 @@ def prepare_testing_data(log_data: LogData,  training_traces: pd.DataFrame, reso
         
     check_new_act = log_data.log[act_name_key].unique().tolist()
     
-    # if "\xad" in check_new_act:
-    #     check_new_act.remove("\xad")
-        
-    # if "\xad" in act_chars:
-    #     act_chars.remove("\xad") 
-    
-      
-    # if len(check_new_act) > len(act_chars):
-    #     print("New activity name unfound in train_set exists in test_set")
     act_chars2 = act_chars + [na for na in check_new_act if na not in act_chars]
 
     target_act_chars = copy.copy(act_chars)
@@ -87,8 +74,7 @@ def select_petrinet_compliant_traces(log_data: LogData,  method_fitness: str, tr
     """
     Select traces compliant to a Petri Net at least in a certain percentage specified as compliance_th
     """
-        
-    
+
     compliant_trace_ids = []
     if (method_fitness == "fitness_alignments") or  (method_fitness == "conformance_diagnostics_alignments_prefix"):
         method_fitness = "conformance_diagnostics_alignments"
@@ -109,34 +95,15 @@ def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_da
         log_data.act_name_key: log_data.act_enc_mapping,
     })
 
-    # dec_log = log
-    # dec_log['time:timestamp'] =  pd.to_datetime(log_data.log['Complete Timestamp']) # for product data
     dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') 
 
-    if (method_fitness != "conformance_diagnostics_alignments_prefix"):
-        if 'bpmn' in str(bk_file):
-            bpmn = pm4py.read_bpmn(str(bk_file))
-            net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
-        else:
-            net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
+    if 'bpmn' in str(bk_file):
+        bpmn = pm4py.read_bpmn(str(bk_file))
+        net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
     else:
-        net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 30)) + ".pnml" )
-        
-        
-    # if ('pnml' in str(bk_file)) and (method_fitness != "conformance_diagnostics_alignments_prefix"):
-    #     print("no")
-    #     net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
-    # elif ('pnml' in str(bk_file)) and (method_fitness == "conformance_diagnostics_alignments_prefix"):
-    #     print("good")
-    #     net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 23)) + "." + str(bk_file).split(".")[1])
-    # elif ('bpmn' in str(bk_file)) and (method_fitness != "conformance_diagnostics_alignments_prefix"):
-    #     bpmn = pm4py.read_bpmn(str(bk_file))
-    #     net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
-    # elif ('bpmn' in str(bk_file)) and (method_fitness == "conformance_diagnostics_alignments_prefix"):
-    #     bpmn = pm4py.read_bpmn(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 23)) + "." + str(bk_file).split(".")[1])
-    #     net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
-        
-    
+        net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
+
+
     if method_fitness == "conformance_diagnostics_alignments":
         alignments = pm4py.conformance_diagnostics_alignments(dec_log,  net, initial_marking, final_marking,
                                                             activity_key=log_data.act_name_key,
@@ -144,12 +111,6 @@ def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_da
                                                             timestamp_key= log_data.timestamp_key)
         trace_fitnesses = [a['fitness'] for a in alignments]
 
-    elif method_fitness == "conformance_diagnostics_alignments_prefix":
-        alignments = pm4py.conformance_diagnostics_alignments(dec_log,  net, initial_marking, final_marking,
-                                                            activity_key=log_data.act_name_key,
-                                                            case_id_key=log_data.case_name_key,
-                                                            timestamp_key= log_data.timestamp_key)
-        trace_fitnesses = [a['fitness'] for a in alignments]
         
     elif method_fitness == "fitness_alignments":
         alignments = pm4py.fitness_alignments(dec_log,  net, initial_marking, final_marking,
@@ -183,21 +144,6 @@ def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_da
 
 
 # === Helper functions ===
-
-# def encode(sentence: str, maxlen: int, char_indices: dict[str, int], resource: bool) -> np.ndarray:
-#     """
-#     Onehot encoding of an ongoing trace (only control-flow)
-#     """
-#     chars = list(char_indices.keys())
-#     num_features = len(chars) + 1 
-#     x = np.zeros((1, maxlen, num_features), dtype=np.float32)
-#     leftpad = maxlen - len(sentence) 
-#     for t, char in enumerate(sentence):
-#         for c in chars:
-#             if c == char:
-#                 x[0, t + leftpad, char_indices[c]] = 1
-#         x[0, t + leftpad, len(chars)] = t + 1
-#     return x
 
 
 def encode(crop_trace: pd.DataFrame, log_data: LogData,  maxlen: int, char_indices: Dict[str, int],
@@ -296,7 +242,6 @@ def get_beam_size(self, NodePrediction, current_prediction_premis, prefix, prefi
 
             temp = NodePrediction(temp_cropped_trace_next,
                                     current_prediction_premis.probability_of + np.log(probability_this))
-            # print("trace = ", ''.join(temp_cropped_trace_next[log_data.act_name_key].tolist()) , ", prob = ",current_prediction_premis.probability_of + np.log(probability_this))
             self.put(temp)  
     else:
         for j in range(beam_size):
@@ -316,20 +261,13 @@ def get_beam_size(self, NodePrediction, current_prediction_premis, prefix, prefi
                 fitness_this = fitness_sorted[len(fitness_sorted) - 1 - j]
                 y_char_sorted = np.array(y_char)[np.argsort(prediction)]
                 y_char_this = y_char_sorted[len(y_char_sorted) - 1 - j]
-                
-                #   act_ground_truth_org[step]
-                # if step < len(act_ground_truth_org):
-                #     rank = sum( prediction> prediction[target_act_to_ind[list(log_data.act_enc_mapping.keys())[list(log_data.act_enc_mapping.values()).index(act_ground_truth_org[step])]]]) +1
-                # else:
-                #     rank = 99999
+
                 record.append(str(
-                    #"trace = ", ''.join(temp_cropped_trace_next[log_data.act_name_key].tolist()) , 
                     "trace_org = " + '>>'.join(  trace_org ) + 
                     "// previous = " + str(round( current_prediction_premis.probability_of, 3)) +
                     "// current = " + str(round( current_prediction_premis.probability_of + np.log(probability_this), 3)) +
                     "// rnn = " + str(round(y_char_this,3)) +
                     "// fitness = " + str(round(fitness_this,3))) +
-                    # "// rank = " + str(rank) +
                     "&"
                     )        
 
@@ -341,7 +279,6 @@ def get_beam_size(self, NodePrediction, current_prediction_premis, prefix, prefi
 def reduce_loop_probability(act_seq, res_seq):
     tmp = dict()
 
-    # loop_len = number of consequent repetitions of loop inside trace
     for loop, loop_len, loop_start_indices in repetitions(act_seq):
         if act_seq.endswith(loop):
             loop_start_symbol = loop[0]

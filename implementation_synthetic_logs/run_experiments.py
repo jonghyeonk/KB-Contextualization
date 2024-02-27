@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--train', default=True, action='store_true', help='train without evaluating')
-    group.add_argument('--evaluate', default=False, action='store_true', help='evaluate without training')
+    group.add_argument('--evaluate', default=True, action='store_true', help='evaluate without training')
     group.add_argument('--full_run', default=False, action='store_true', help='train and evaluate model')
     group.add_argument('--weight', default=0, action='store_true', help='train and evaluate model')
 
@@ -76,6 +76,3 @@ if __name__ == '__main__':
                          timestamp = False,
                          outcome = False)
         
-        ## Note
-        # alg = "baseline" or "beamsearch"
-        # method_fitness = "conformance_diagnostics_alignments", "conformance_diagnostics_token_based_replay", "fitness_alignments", "fitness_token_based_replay"

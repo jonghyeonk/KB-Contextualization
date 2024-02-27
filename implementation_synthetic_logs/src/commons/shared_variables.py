@@ -10,7 +10,8 @@ ascii_offset = 161
 beam_size = 3
 th_reduction_factor = 1
 
-data_folder = Path.cwd() / 'data'
+root_folder = Path.cwd() / 'implementation_synthetic_logs'
+data_folder = root_folder / 'data'
 input_folder = data_folder / 'input'
 output_folder = data_folder / 'output'
 
@@ -24,22 +25,11 @@ variant_split = 0.9
 validation_split = 0.2
 
 log_list = [
-    #  'Synthetic log labelled.xes'
-    # 'Production.csv'
     # 'sepsis_cases_1.csv'
-    # 'sepsis_cases_1_sampled10.csv',
-    # 'sepsis_cases_1_sampled20.csv',
-    # 'sepsis_cases_1_sampled30.csv',
-    # 'sepsis_cases_1_sampled40.csv',
-    # 'sepsis_cases_1_sampled50.csv'
-    # 'sepsis_cases_2.csv'
-#     'sepsis_cases_4.csv',
-    # 'Synthetic_UBE.csv',
-    # 'credit_card.csv',
-    # 'mccloud.csv',
-    # 'hospital_billing_2.csv',
-    # 'hospital_billing_3.csv'
-    # 'helpdesk.csv'
-    # 'BPIC12.csv'
+    # 'helpdesk.csv' 
+    # 'BPIC12.csv' 
+    # 'Road_Traffic.csv'
+    # 'BPIC13_I.csv'
+    # 'BPIC13_CP.csv',
     'Synthetic.xes'
 ]

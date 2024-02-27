@@ -9,7 +9,7 @@ def create_checkpoints_path(log_name, models_folder, fold, model_type):
     folder_path = shared.output_folder / models_folder / str(fold) / 'models' / model_type / log_name
     if not Path.exists(folder_path):
         Path.mkdir(folder_path, parents=True)
-    checkpoint_name = folder_path / 'model_{epoch:03d}-{val_loss:.3f}.h5'
+    checkpoint_name = folder_path / 'model_{epoch:03d}-{val_loss:.3f}.tf'
     return str(checkpoint_name)
 
 

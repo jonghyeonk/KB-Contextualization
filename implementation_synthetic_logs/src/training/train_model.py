@@ -1,13 +1,3 @@
-"""
-This script takes as input the workflow, timestamps and an event attribute "resource"
-It makes predictions on the workflow & timestamps and the event attribute "resource"
-this script trains an LSTM model on one of the data files in the data folder of
-this repository. the input file can be changed to another file from the data folder
-by changing its name in line 46.
-it is recommended to run this script on GPU, as recurrent networks are quite
-computationally intensive.
-Author: Niek Tax
-"""
 
 from __future__ import print_function, division
 import copy
@@ -22,7 +12,7 @@ from keras_nlp.layers import TransformerEncoder
 from src.commons import shared_variables as shared
 from src.commons.log_utils import LogData
 from src.commons.utils import extract_trace_sequences
-from src.training.train_common import create_checkpoints_path, plot_loss, CustomTransformer
+from src.training.train_common import create_checkpoints_path, plot_loss
 
 
 def _build_model(max_len, num_features, target_chars, target_chars_group, models_folder, resource, outcome):
@@ -120,13 +110,6 @@ def train(log_data: LogData, models_folder: str, resource: bool, outcome: bool):
     chars = list(map(lambda x: set(x), training_lines))  # Remove duplicate activities from each separate case
     chars = list(set().union(*chars))  # Creates a list of all the unique activities in the data set
     chars.sort()  # Sorts the chars in alphabetical order
-
-    # check_new_act = log_data.log[log_data.act_name_key].unique().tolist()
-    # if "\xad" in check_new_act:
-    #     check_new_act.remove("\xad")
-    
-    # if len(check_new_act) > len(chars):
-    # chars = chars + [na for na in check_new_act if na not in chars]
 
     target_chars = copy.copy(chars)
     chars.remove('!')
