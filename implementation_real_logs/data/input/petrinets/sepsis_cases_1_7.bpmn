@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+ xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+ xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+ xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ targetNamespace="http://www.omg.org/bpmn20"
+ xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"><process id="proc_1614753718"><startEvent id="node10" name=""><outgoing>edge2</outgoing>
+</startEvent>
+<endEvent id="node11" name=""><incoming>edge19</incoming>
+</endEvent>
+<task id="node6" name="Release B"><incoming>edge53</incoming>
+<outgoing>edge58</outgoing>
+</task>
+<task id="node7" name="Admission IC"><incoming>edge54</incoming>
+<outgoing>edge32</outgoing>
+</task>
+<task id="node8" name="Release C"><incoming>edge55</incoming>
+<outgoing>edge59</outgoing>
+</task>
+<task id="node9" name="Release D"><incoming>edge51</incoming>
+<outgoing>edge30</outgoing>
+</task>
+<task id="node16" name="ER Registration"><incoming>edge2</incoming>
+<outgoing>edge3</outgoing>
+</task>
+<task id="node17" name="ER Triage"><incoming>edge3</incoming>
+<outgoing>edge0</outgoing>
+</task>
+<task id="node18" name="Leucocytes"><incoming>edge37</incoming>
+<outgoing>edge38</outgoing>
+</task>
+<task id="node19" name="CRP"><incoming>edge42</incoming>
+<outgoing>edge43</outgoing>
+</task>
+<task id="node20" name="ER Sepsis Triage"><incoming>edge0</incoming>
+<outgoing>edge4</outgoing>
+</task>
+<task id="node21" name="IV Liquid"><incoming>edge5</incoming>
+<outgoing>edge16</outgoing>
+</task>
+<task id="node22" name="Admission NC"><incoming>edge47</incoming>
+<outgoing>edge48</outgoing>
+</task>
+<task id="node23" name="Release A"><incoming>edge21</incoming>
+<outgoing>edge29</outgoing>
+</task>
+<task id="node24" name="LacticAcid"><incoming>edge22</incoming>
+<outgoing>edge61</outgoing>
+</task>
+<task id="node25" name="IV Antibiotics"><incoming>edge14</incoming>
+<outgoing>edge44</outgoing>
+</task>
+<exclusiveGateway id="node0" name=""><incoming>edge15</incoming>
+<incoming>edge16</incoming>
+<outgoing>edge14</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node2" name=""><incoming>edge29</incoming>
+<incoming>edge30</incoming>
+<incoming>edge58</incoming>
+<incoming>edge59</incoming>
+<outgoing>edge19</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node4" name=""><incoming>edge49</incoming>
+<incoming>edge52</incoming>
+<incoming>edge56</incoming>
+<outgoing>edge21</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node5" name=""><incoming>edge31</incoming>
+<incoming>edge32</incoming>
+<outgoing>edge22</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node12" name=""><incoming>edge4</incoming>
+<outgoing>edge15</outgoing>
+<outgoing>edge31</outgoing>
+<outgoing>edge5</outgoing>
+<outgoing>edge60</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node26" name=""><incoming>edge36</incoming>
+<incoming>edge60</incoming>
+<incoming>edge61</incoming>
+<incoming>edge62</incoming>
+<outgoing>edge37</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node27" name=""><incoming>edge38</incoming>
+<outgoing>edge36</outgoing>
+<outgoing>edge49</outgoing>
+<outgoing>edge50</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node28" name=""><incoming>edge41</incoming>
+<incoming>edge50</incoming>
+<outgoing>edge42</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node29" name=""><incoming>edge43</incoming>
+<outgoing>edge41</outgoing>
+<outgoing>edge51</outgoing>
+<outgoing>edge52</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node30" name=""><incoming>edge44</incoming>
+<incoming>edge46</incoming>
+<outgoing>edge47</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node31" name=""><incoming>edge48</incoming>
+<outgoing>edge46</outgoing>
+<outgoing>edge53</outgoing>
+<outgoing>edge54</outgoing>
+<outgoing>edge55</outgoing>
+<outgoing>edge56</outgoing>
+<outgoing>edge62</outgoing>
+</exclusiveGateway>
+<sequenceFlow id="edge0" name="" sourceRef="node17" targetRef="node20"/>
+<sequenceFlow id="edge2" name="" sourceRef="node10" targetRef="node16"/>
+<sequenceFlow id="edge3" name="" sourceRef="node16" targetRef="node17"/>
+<sequenceFlow id="edge4" name="" sourceRef="node20" targetRef="node12"/>
+<sequenceFlow id="edge5" name="" sourceRef="node12" targetRef="node21"/>
+<sequenceFlow id="edge14" name="" sourceRef="node0" targetRef="node25"/>
+<sequenceFlow id="edge15" name="" sourceRef="node12" targetRef="node0"/>
+<sequenceFlow id="edge16" name="" sourceRef="node21" targetRef="node0"/>
+<sequenceFlow id="edge19" name="" sourceRef="node2" targetRef="node11"/>
+<sequenceFlow id="edge21" name="" sourceRef="node4" targetRef="node23"/>
+<sequenceFlow id="edge22" name="" sourceRef="node5" targetRef="node24"/>
+<sequenceFlow id="edge29" name="" sourceRef="node23" targetRef="node2"/>
+<sequenceFlow id="edge30" name="" sourceRef="node9" targetRef="node2"/>
+<sequenceFlow id="edge31" name="" sourceRef="node12" targetRef="node5"/>
+<sequenceFlow id="edge32" name="" sourceRef="node7" targetRef="node5"/>
+<sequenceFlow id="edge36" name="" sourceRef="node27" targetRef="node26"/>
+<sequenceFlow id="edge37" name="" sourceRef="node26" targetRef="node18"/>
+<sequenceFlow id="edge38" name="" sourceRef="node18" targetRef="node27"/>
+<sequenceFlow id="edge41" name="" sourceRef="node29" targetRef="node28"/>
+<sequenceFlow id="edge42" name="" sourceRef="node28" targetRef="node19"/>
+<sequenceFlow id="edge43" name="" sourceRef="node19" targetRef="node29"/>
+<sequenceFlow id="edge44" name="" sourceRef="node25" targetRef="node30"/>
+<sequenceFlow id="edge46" name="" sourceRef="node31" targetRef="node30"/>
+<sequenceFlow id="edge47" name="" sourceRef="node30" targetRef="node22"/>
+<sequenceFlow id="edge48" name="" sourceRef="node22" targetRef="node31"/>
+<sequenceFlow id="edge49" name="" sourceRef="node27" targetRef="node4"/>
+<sequenceFlow id="edge50" name="" sourceRef="node27" targetRef="node28"/>
+<sequenceFlow id="edge51" name="" sourceRef="node29" targetRef="node9"/>
+<sequenceFlow id="edge52" name="" sourceRef="node29" targetRef="node4"/>
+<sequenceFlow id="edge53" name="" sourceRef="node31" targetRef="node6"/>
+<sequenceFlow id="edge54" name="" sourceRef="node31" targetRef="node7"/>
+<sequenceFlow id="edge55" name="" sourceRef="node31" targetRef="node8"/>
+<sequenceFlow id="edge56" name="" sourceRef="node31" targetRef="node4"/>
+<sequenceFlow id="edge58" name="" sourceRef="node6" targetRef="node2"/>
+<sequenceFlow id="edge59" name="" sourceRef="node8" targetRef="node2"/>
+<sequenceFlow id="edge60" name="" sourceRef="node12" targetRef="node26"/>
+<sequenceFlow id="edge61" name="" sourceRef="node24" targetRef="node26"/>
+<sequenceFlow id="edge62" name="" sourceRef="node31" targetRef="node26"/>
+</process>
+<bpmndi:BPMNDiagram id="id_-514748219"><bpmndi:BPMNPlane bpmnElement="proc_1614753718"><bpmndi:BPMNShape bpmnElement="node25"><dc:Bounds x="826.0" y="181.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node28"><dc:Bounds x="1951.0" y="327.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node16"><dc:Bounds x="76.0" y="231.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node22"><dc:Bounds x="1051.0" y="199.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node27"><dc:Bounds x="1876.0" y="313.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node0"><dc:Bounds x="751.0" y="196.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node5"><dc:Bounds x="1426.0" y="358.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node8"><dc:Bounds x="1276.0" y="101.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node21"><dc:Bounds x="601.0" y="169.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node23"><dc:Bounds x="2401.0" y="246.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node10"><dc:Bounds x="1.0" y="239.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node24"><dc:Bounds x="1501.0" y="341.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node30"><dc:Bounds x="976.0" y="183.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node9"><dc:Bounds x="2251.0" y="316.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node19"><dc:Bounds x="2026.0" y="345.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node4"><dc:Bounds x="2288.5" y="262.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node17"><dc:Bounds x="226.0" y="231.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node6"><dc:Bounds x="1276.0" y="171.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node26"><dc:Bounds x="1651.0" y="307.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node2"><dc:Bounds x="2551.0" y="229.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node7"><dc:Bounds x="1276.0" y="301.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node29"><dc:Bounds x="2176.0" y="310.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node31"><dc:Bounds x="1201.0" y="215.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node11"><dc:Bounds x="2626.0" y="229.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node18"><dc:Bounds x="1726.0" y="337.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node20"><dc:Bounds x="376.0" y="231.5" width="100.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node12"><dc:Bounds x="526.0" y="241.0" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNEdge bpmnElement="edge56"><di:waypoint x="1213.5" y="227.5"/>
+<di:waypoint x="1326.0" y="241.5"/>
+<di:waypoint x="1438.5" y="241.5"/>
+<di:waypoint x="1551.0" y="241.5"/>
+<di:waypoint x="1663.5" y="241.5"/>
+<di:waypoint x="1776.0" y="241.5"/>
+<di:waypoint x="1888.5" y="241.5"/>
+<di:waypoint x="1963.5" y="241.5"/>
+<di:waypoint x="2076.0" y="241.5"/>
+<di:waypoint x="2188.5" y="241.5"/>
+<di:waypoint x="2301.0" y="274.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge43"><di:waypoint x="2076.0" y="365.5"/>
+<di:waypoint x="2188.5" y="322.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge19"><di:waypoint x="2563.5" y="241.5"/>
+<di:waypoint x="2638.5" y="241.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge5"><di:waypoint x="538.5" y="253.5"/>
+<di:waypoint x="651.0" y="189.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge15"><di:waypoint x="538.5" y="253.5"/>
+<di:waypoint x="651.0" y="239.5"/>
+<di:waypoint x="763.5" y="208.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge30"><di:waypoint x="2301.0" y="336.5"/>
+<di:waypoint x="2451.0" y="316.5"/>
+<di:waypoint x="2563.5" y="241.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge41"><di:waypoint x="2188.5" y="322.5"/>
+<di:waypoint x="2076.0" y="315.5"/>
+<di:waypoint x="1963.5" y="339.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge14"><di:waypoint x="763.5" y="208.5"/>
+<di:waypoint x="876.0" y="201.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge49"><di:waypoint x="1888.5" y="325.5"/>
+<di:waypoint x="1963.5" y="277.5"/>
+<di:waypoint x="2076.0" y="277.5"/>
+<di:waypoint x="2188.5" y="277.5"/>
+<di:waypoint x="2301.0" y="274.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge53"><di:waypoint x="1213.5" y="227.5"/>
+<di:waypoint x="1326.0" y="191.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge38"><di:waypoint x="1776.0" y="357.5"/>
+<di:waypoint x="1888.5" y="325.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge50"><di:waypoint x="1888.5" y="325.5"/>
+<di:waypoint x="1963.5" y="339.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge59"><di:waypoint x="1326.0" y="121.5"/>
+<di:waypoint x="1438.5" y="121.5"/>
+<di:waypoint x="1551.0" y="121.5"/>
+<di:waypoint x="1663.5" y="121.5"/>
+<di:waypoint x="1776.0" y="121.5"/>
+<di:waypoint x="1888.5" y="121.5"/>
+<di:waypoint x="1963.5" y="121.5"/>
+<di:waypoint x="2076.0" y="121.5"/>
+<di:waypoint x="2188.5" y="121.5"/>
+<di:waypoint x="2301.0" y="121.5"/>
+<di:waypoint x="2451.0" y="121.5"/>
+<di:waypoint x="2563.5" y="241.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge46"><di:waypoint x="1213.5" y="227.5"/>
+<di:waypoint x="1101.0" y="169.5"/>
+<di:waypoint x="988.5" y="195.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge32"><di:waypoint x="1326.0" y="321.5"/>
+<di:waypoint x="1438.5" y="370.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge60"><di:waypoint x="538.5" y="253.5"/>
+<di:waypoint x="651.0" y="371.5"/>
+<di:waypoint x="763.5" y="371.5"/>
+<di:waypoint x="876.0" y="371.5"/>
+<di:waypoint x="988.5" y="371.5"/>
+<di:waypoint x="1101.0" y="371.5"/>
+<di:waypoint x="1213.5" y="371.5"/>
+<di:waypoint x="1326.0" y="371.5"/>
+<di:waypoint x="1438.5" y="311.5"/>
+<di:waypoint x="1551.0" y="311.5"/>
+<di:waypoint x="1663.5" y="319.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge36"><di:waypoint x="1888.5" y="325.5"/>
+<di:waypoint x="1776.0" y="307.5"/>
+<di:waypoint x="1663.5" y="319.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge4"><di:waypoint x="426.0" y="251.5"/>
+<di:waypoint x="538.5" y="253.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge55"><di:waypoint x="1213.5" y="227.5"/>
+<di:waypoint x="1326.0" y="121.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge31"><di:waypoint x="538.5" y="253.5"/>
+<di:waypoint x="651.0" y="401.5"/>
+<di:waypoint x="763.5" y="401.5"/>
+<di:waypoint x="876.0" y="401.5"/>
+<di:waypoint x="988.5" y="401.5"/>
+<di:waypoint x="1101.0" y="401.5"/>
+<di:waypoint x="1213.5" y="401.5"/>
+<di:waypoint x="1326.0" y="401.5"/>
+<di:waypoint x="1438.5" y="370.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge62"><di:waypoint x="1213.5" y="227.5"/>
+<di:waypoint x="1326.0" y="271.5"/>
+<di:waypoint x="1438.5" y="271.5"/>
+<di:waypoint x="1551.0" y="271.5"/>
+<di:waypoint x="1663.5" y="319.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge2"><di:waypoint x="13.5" y="251.5"/>
+<di:waypoint x="126.0" y="251.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge61"><di:waypoint x="1551.0" y="361.5"/>
+<di:waypoint x="1663.5" y="319.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge29"><di:waypoint x="2451.0" y="266.5"/>
+<di:waypoint x="2563.5" y="241.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge51"><di:waypoint x="2188.5" y="322.5"/>
+<di:waypoint x="2301.0" y="336.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge22"><di:waypoint x="1438.5" y="370.5"/>
+<di:waypoint x="1551.0" y="361.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge3"><di:waypoint x="126.0" y="251.5"/>
+<di:waypoint x="276.0" y="251.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge44"><di:waypoint x="876.0" y="201.5"/>
+<di:waypoint x="988.5" y="195.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge37"><di:waypoint x="1663.5" y="319.5"/>
+<di:waypoint x="1776.0" y="357.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge48"><di:waypoint x="1101.0" y="219.5"/>
+<di:waypoint x="1213.5" y="227.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge47"><di:waypoint x="988.5" y="195.5"/>
+<di:waypoint x="1101.0" y="219.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge58"><di:waypoint x="1326.0" y="191.5"/>
+<di:waypoint x="1438.5" y="181.5"/>
+<di:waypoint x="1551.0" y="181.5"/>
+<di:waypoint x="1663.5" y="181.5"/>
+<di:waypoint x="1776.0" y="181.5"/>
+<di:waypoint x="1888.5" y="181.5"/>
+<di:waypoint x="1963.5" y="181.5"/>
+<di:waypoint x="2076.0" y="181.5"/>
+<di:waypoint x="2188.5" y="181.5"/>
+<di:waypoint x="2301.0" y="181.5"/>
+<di:waypoint x="2451.0" y="181.5"/>
+<di:waypoint x="2563.5" y="241.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge52"><di:waypoint x="2188.5" y="322.5"/>
+<di:waypoint x="2301.0" y="274.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge54"><di:waypoint x="1213.5" y="227.5"/>
+<di:waypoint x="1326.0" y="321.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge0"><di:waypoint x="276.0" y="251.5"/>
+<di:waypoint x="426.0" y="251.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge16"><di:waypoint x="651.0" y="189.5"/>
+<di:waypoint x="763.5" y="208.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge42"><di:waypoint x="1963.5" y="339.5"/>
+<di:waypoint x="2076.0" y="365.5"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="edge21"><di:waypoint x="2301.0" y="274.5"/>
+<di:waypoint x="2451.0" y="266.5"/>
+</bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane>
+</bpmndi:BPMNDiagram>
+</definitions>

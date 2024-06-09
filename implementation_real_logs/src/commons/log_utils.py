@@ -136,8 +136,8 @@ class LogData:
         dict_cv_test = filterByKey(test_ids)
         
         # save the test traces in the target cluster if you want
-        # test = self.log[self.log[self.case_name_key].isin(test_ids)].sort_values(self.timestamp_key, ascending=True, kind='mergesort').reset_index(drop=True)
-        # test.to_csv(str(log_path.stem)+ '_cprefix' + str(self.evaluation_prefix_start) + '_test.csv', index=False)
+        test = self.log[self.log[self.case_name_key].isin(test_ids)].sort_values(self.timestamp_key, ascending=True, kind='mergesort').reset_index(drop=True)
+        test.to_csv(str(log_path.stem)+ '_cprefix' + str(self.evaluation_prefix_start) + '_test.csv', index=False)
         
         # Outputs
         self.training_trace_ids = trace_ids  
@@ -235,8 +235,8 @@ class LogData:
             self.timestamp_key = 'time:timestamp'
             self.compliance_th = 0.77   # 0.62 for complete petrinet, 0.77 for reduced petrinet
             self.evaluation_th = self.compliance_th * shared.th_reduction_factor
-            self.evaluation_prefix_start = 8
-            self.evaluation_prefix_end = 12
+            self.evaluation_prefix_start = 3
+            self.evaluation_prefix_end = 7
 
         else:
             raise RuntimeError(f"No settings defined for log: {self.log_name.value}.")

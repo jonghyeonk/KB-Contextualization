@@ -49,11 +49,11 @@ class ExperimentRunner:
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('--log', default=None, help='input log')
+    parser.add_argument('--log', default="sepsis_cases_1.csv", help='input log')
 
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--train', default=True, action='store_true', help='train without evaluating')
-    group.add_argument('--evaluate', default=False, action='store_true', help='evaluate without training')
+    group.add_argument('--train', default=False, action='store_true', help='train without evaluating')
+    group.add_argument('--evaluate', default=True, action='store_true', help='evaluate without training')
     group.add_argument('--full_run', default=False, action='store_true', help='train and evaluate model')
     group.add_argument('--weight', default=0, action='store_true', help='train and evaluate model')
 
