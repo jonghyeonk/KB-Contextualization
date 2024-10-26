@@ -97,12 +97,15 @@ def get_pn_fitness(bk_file: Path, method_fitness: str, log: pd.DataFrame, log_da
 
     dec_log[log_data.timestamp_key] = pd.to_datetime(log_data.log[log_data.timestamp_key], unit='s') 
 
-    if 'bpmn' in str(bk_file):
-        bpmn = pm4py.read_bpmn(str(bk_file))
-        net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
+    if (method_fitness != "conformance_diagnostics_alignments_prefix"):
+        if 'bpmn' in str(bk_file):
+            bpmn = pm4py.read_bpmn(str(bk_file))
+            net, initial_marking, final_marking = pm4py.convert_to_petri_net(bpmn)
+        else:
+            net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
     else:
-        net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file))
-
+        net, initial_marking, final_marking = pm4py.read_pnml(str(bk_file).split(".")[0] + "_" + str( min(len(dec_log), 30)) + ".pnml" )
+        
     if method_fitness == "conformance_diagnostics_alignments":
         alignments = pm4py.conformance_diagnostics_alignments(dec_log,  net, initial_marking, final_marking,
                                                             activity_key=log_data.act_name_key,
